@@ -24,3 +24,10 @@ class CustomGroupAdmin(GroupAdmin):
 
 admin.site.unregister(Group)
 admin.site.register(GroupUser, CustomGroupAdmin)
+
+
+class StoreAdmin(admin.ModelAdmin):
+    list_display = ['store_id','store_name','manager','longitude','latitude']
+
+admin.site.register(Store,StoreAdmin)
+
