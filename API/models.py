@@ -5,6 +5,9 @@ from phonenumber_field.modelfields import PhoneNumberField
 from django.core.validators import EmailValidator, RegexValidator
 from django.db import models
 
+from API.Validators import validate_lowercase
+
+
 class UserAccount(AbstractUser):
     GENDER_CHOICES = [
         ('Customer', 'Customer'),
@@ -14,12 +17,9 @@ class UserAccount(AbstractUser):
     username = models.CharField(
         max_length=150,
         unique=True,
-        validators=[
-            RegexValidator(
-                regex='^[a-z]+$',
-                message='Username must contain only lowercase letters.'
-            )
-        ]
+        validators=[validate_lowercase]
+
+
     )
     email = models.EmailField(
         verbose_name='email address',
