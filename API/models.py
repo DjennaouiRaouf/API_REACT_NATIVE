@@ -52,5 +52,6 @@ class Store(models.Model):
     longitude=models.FloatField(null=False,blank=True)
     latitude=models.FloatField(null=False,blank=True)
     is_available=models.BooleanField(null=False,blank=True,default=True)
+    adress=models.CharField(max_length=500,null=False,blank=True,default='-')
 
 
