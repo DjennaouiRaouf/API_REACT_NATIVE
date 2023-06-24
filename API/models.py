@@ -47,9 +47,10 @@ class GroupUser(Group):
 
 class Store(models.Model):
     store_id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    manager=models.ForeignKey(UserAccount,on_delete=models.CASCADE)
+    manager=models.ForeignKey(UserAccount,on_delete=models.CASCADE, limit_choices_to={'type': 'Trader'},)
     store_name=models.CharField(max_length=500,blank=True)
     longitude=models.FloatField(null=False,blank=True)
     latitude=models.FloatField(null=False,blank=True)
+    is_available=models.BooleanField(null=False,blank=True,default=True)
 
 

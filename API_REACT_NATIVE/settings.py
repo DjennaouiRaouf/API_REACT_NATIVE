@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'preventconcurrentlogins',
     'rest_framework',
     'API',
 ]
@@ -37,6 +38,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'preventconcurrentlogins.middleware.PreventConcurrentLoginsMiddleware',
 ]
 
 ROOT_URLCONF = 'API_REACT_NATIVE.urls'

@@ -1,6 +1,8 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.contrib.auth.admin import UserAdmin, GroupAdmin
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+
 from .models import *
 
 
@@ -27,7 +29,8 @@ admin.site.register(GroupUser, CustomGroupAdmin)
 
 
 class StoreAdmin(admin.ModelAdmin):
-    list_display = ['store_id','store_name','manager','longitude','latitude']
+    list_display = ['store_id','store_name','manager','longitude','latitude','is_available']
+
 
 admin.site.register(Store,StoreAdmin)
 
