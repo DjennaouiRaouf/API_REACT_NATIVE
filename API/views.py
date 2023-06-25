@@ -35,6 +35,21 @@ class LogoutView(APIView):
         return Response({'message': 'Logout successful'}, status=status.HTTP_200_OK)
 
 
+class SignInView(APIView):
+    permission_classes = []
+    def post(self,request):
+        try:
+            username = request.data.get('username')
+            password = request.data.get('password')
+            userAccount = UserAccount.objects.create_user(username=username, password=password)
+            userAccount.email="abc@gmail.com"
+            userAccount.type="Trader"
+            userAccount.save()
+            return Response({'message': 'User account has been created successfuly'}, status=status.HTTP_200_OK)
+        except:
+            return Response({'message': 'User account has not been created '}, status=status.HTTP_404_NOT_FOUND)
+
+
 
 '''
 Remove Store By id 
