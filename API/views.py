@@ -45,6 +45,7 @@ class SignInView(APIView):
             userAccount.email="abc@gmail.com"
             userAccount.type="Trader"
             userAccount.save()
+
             return Response({'message': 'User account has been created successfuly'}, status=status.HTTP_200_OK)
         except:
             return Response({'message': 'User account has not been created '}, status=status.HTTP_404_NOT_FOUND)
