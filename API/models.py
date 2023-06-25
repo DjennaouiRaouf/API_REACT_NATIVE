@@ -36,14 +36,8 @@ class UserAccount(AbstractUser):
         verbose_name_plural = 'Users'
 
 
-
-
-
 class GroupUser(Group):
     group_id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    class Meta:
-        verbose_name = 'Group'
-        verbose_name_plural = 'Groups'
 
 class Store(models.Model):
     store_id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -53,5 +47,4 @@ class Store(models.Model):
     latitude=models.FloatField(null=False,blank=True)
     is_available=models.BooleanField(null=False,blank=True,default=True)
     adress=models.CharField(max_length=500,null=False,blank=True,default='-')
-
 

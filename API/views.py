@@ -31,9 +31,9 @@ class LogoutView(APIView):
 class RemoveStoreView(APIView):
     def post(self,request):
         if(request.user.type=='Trader'):
-            adress=request.data.get('adress');
+            store_id=request.data.get('store_id');
             try:
-                store=Store.objects.get(adress=adress)
+                store=Store.objects.get(store_id=store_id)
                 store.is_available=False
                 store.save()
                 return Response({'message': 'Store successfuly removed'}, status=status.HTTP_200_OK)
