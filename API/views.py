@@ -5,7 +5,12 @@ from django.contrib.auth import authenticate, login,logout
 
 from API.models import *
 
+'''
+login
+This method is going to return a response
+Which contains user id and user type
 
+'''
 class LoginView(APIView):
     permission_classes = []
     def post(self, request):
@@ -14,10 +19,14 @@ class LoginView(APIView):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request,user)
-            return Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
+            return Response({'message': 'Login successful','uid':str(user.user_id),'type':str(user.type)}, status=status.HTTP_200_OK)
         else:
             return Response({'message': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
+
+'''
+logout
+'''
 
 class LogoutView(APIView):
 
@@ -27,6 +36,10 @@ class LogoutView(APIView):
 
 
 
+'''
+Remove Store By id 
+(We are not removing the store from the database we are going to set the flag is_available to false)
+'''
 
 class RemoveStoreView(APIView):
     def post(self,request):
