@@ -41,9 +41,20 @@ class SignInView(APIView):
         try:
             username = request.data.get('username')
             password = request.data.get('password')
+            email = request.data.get('email')
+            first_name = request.data.get('first_name')
+            last_name = request.data.get('last_name')
+            type = request.data.get('type')
+            phone_number = request.data.get('phone_number')
+
             userAccount = UserAccount.objects.create_user(username=username, password=password)
-            userAccount.email="abc@gmail.com"
-            userAccount.type="Trader"
+
+            userAccount.email=email
+            userAccount.first_name=first_name
+            userAccount.last_name=last_name
+            userAccount.type=type
+            userAccount.phone_number=phone_number
+
             userAccount.save()
 
             return Response({'message': 'User account has been created successfuly'}, status=status.HTTP_200_OK)
