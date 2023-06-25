@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate, login,logout
 
+
 from API.models import *
 
 '''
@@ -35,6 +36,9 @@ class LogoutView(APIView):
         return Response({'message': 'Logout successful'}, status=status.HTTP_200_OK)
 
 
+'''
+Sign in
+'''
 class SignInView(APIView):
     permission_classes = []
     def post(self,request):
@@ -57,12 +61,21 @@ class SignInView(APIView):
 
             userAccount.save()
 
-            return Response({'message': 'User account has been created successfuly'}, status=status.HTTP_200_OK)
+            return Response({'message': 'User account has been created successfully'}, status=status.HTTP_200_OK)
         except:
             return Response({'message': 'User account has not been created '}, status=status.HTTP_404_NOT_FOUND)
 
 
-
+'''
+Change password
+'''
+class ChangePWDView(APIView):
+    def post(self,request):
+        password = request.data.get('password')
+        user = UserAccount.objects.get(username=request.user.username)
+        user.set_password(password)
+        user.save()
+        return Response({'message': 'Password successfully changed'}, status=status.HTTP_200_OK)
 
 
 '''
@@ -78,7 +91,7 @@ class RemoveStoreView(APIView):
                 store=Store.objects.get(store_id=store_id)
                 store.is_available=False
                 store.save()
-                return Response({'message': 'Store successfuly removed'}, status=status.HTTP_200_OK)
+                return Response({'message': 'Store successfully removed'}, status=status.HTTP_200_OK)
             except:
                 return Response({'message': 'Store not removed '}, status=status.HTTP_404_NOT_FOUND)
 
