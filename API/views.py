@@ -77,7 +77,6 @@ class ChangePWDView(APIView):
         user.save()
         return Response({'message': 'Password successfully changed'}, status=status.HTTP_200_OK)
 
-
 '''
 Remove Store By id 
 (We are not removing the store from the database we are going to set the flag is_available to false)
