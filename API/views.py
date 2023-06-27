@@ -1,3 +1,4 @@
+import pyotp as pyotp
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -81,6 +82,38 @@ class ChangePWDView(APIView):
 Remove Store By id 
 (We are not removing the store from the database we are going to set the flag is_available to false)
 '''
+
+class GenerateOTP(APIView):
+    def post(self, request):
+        user = UserAccount.objects.get(username=request.user.username)
+        if user != None:
+            otp_base32 = pyotp.random_base32()
+            otp_auth_url = pyotp.totp.TOTP(otp_base32).provisioning_uri(
+            name=request.user.username.lower(), issuer_name="codepython.com")
+            user.otp_auth_url = otp_auth_url
+            user.otp_base32 = otp_base32
+            user.save()
+            return Response({'base32': otp_base32, "otpauth_url": otp_auth_url})
+        else:
+            return Response({'message': 'User account not found '}, status=status.HTTP_404_NOT_FOUND)
+
+
+class VerifyOTP(APIView):
+    def post(self, request):
+        otp_token = request.data.get('token', None)
+        user = UserAccount.objects.get(username=request.user.username)
+        if user != None:
+            totp = pyotp.TOTP(user.otp_base32)
+            if not totp.verify(otp_token):
+                return Response({'message': 'Token is invalid or user doesn\'t exist'}, status=status.HTTP_400_BAD_REQUEST)
+            user.otp_enabled = True
+            user.otp_verified = True
+            user.save()
+            return Response({'otp_verified': True})
+
+        else:
+            return Response({'message': 'User account not found '}, status=status.HTTP_404_NOT_FOUND)
+
 
 class RemoveStoreView(APIView):
     def post(self,request):

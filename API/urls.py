@@ -8,10 +8,9 @@ urlpatterns = [
     path('signin/',SignInView.as_view()),
     path('changepwd/',ChangePWDView.as_view()),
 
-    path('otp/generate', GenerateOTP.as_view()),
-    path('otp/verify', VerifyOTP.as_view()),
-    path('otp/validate', ValidateOTP.as_view()),
-    path('otp/disable', DisableOTP.as_view()),
+    path('generateotp/', GenerateOTP.as_view()),
+    path('verifyotp/', VerifyOTP.as_view()),
+
 
 
 
