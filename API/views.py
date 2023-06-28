@@ -18,9 +18,20 @@ class LoginView(APIView):
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
+        token = request.data.get('token')
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            login(request,user)
+            if user.otp_enabled == False :
+                login(request,user)
+            if user.otp_enabled == True :
+                totp = pyotp.TOTP(user.otp_base32)
+                if totp.verify(token):
+                    login(request,user)
+                else:
+                    return Response({'message': 'Token is invalid or user doesn\'t exist'},
+                                    status=status.HTTP_400_BAD_REQUEST)
+
+
             return Response({'message': 'Login successful','uid':str(user.user_id),'type':str(user.type)}, status=status.HTTP_200_OK)
         else:
             return Response({'message': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
@@ -92,25 +103,6 @@ class ChangePWDView(APIView):
 Remove Store By id 
 (We are not removing the store from the database we are going to set the flag is_available to false)
 '''
-
-
-
-class VerifyOTP(APIView):
-    def post(self, request):
-        otp_token = request.data.get('token', None)
-        user = UserAccount.objects.get(username=request.user.username)
-        if user != None:
-            totp = pyotp.TOTP(user.otp_base32)
-            if not totp.verify(otp_token):
-                return Response({'message': 'Token is invalid or user doesn\'t exist'}, status=status.HTTP_400_BAD_REQUEST)
-            user.otp_enabled = True
-            user.otp_verified = True
-            user.save()
-            return Response({'otp_verified': True})
-
-        else:
-            return Response({'message': 'User account not found '}, status=status.HTTP_404_NOT_FOUND)
-
 
 
 

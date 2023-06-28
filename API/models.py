@@ -32,7 +32,6 @@ class UserAccount(AbstractUser):
     phone_number= PhoneNumberField()
 
     otp_enabled = models.BooleanField(default=False)
-    otp_verified = models.BooleanField(default=False)
     otp_base32 = models.CharField(max_length=255, null=True)
     otp_auth_url = models.CharField(max_length=255, null=True)
 

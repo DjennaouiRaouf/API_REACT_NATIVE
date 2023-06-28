@@ -7,9 +7,7 @@ urlpatterns = [
     path('remove_store/',RemoveStoreView.as_view()),
     path('signin/',SignInView.as_view()),
     path('changepwd/',ChangePWDView.as_view()),
-    #OTP
-    path('generateotp/', GenerateOTP.as_view()),
-    path('verifyotp/', VerifyOTP.as_view()),
+
 
 
 
