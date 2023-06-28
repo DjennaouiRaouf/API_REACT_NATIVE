@@ -63,16 +63,11 @@ class SignInView(APIView):
             type = request.data.get('type')
             phone_number = request.data.get('phone_number')
             enable2FA=request.data.get('enable2FA')
-
-            userAccount = UserAccount.objects.create_user(username=username, password=password)
-
-            userAccount.email=email
-            userAccount.first_name=first_name
-            userAccount.last_name=last_name
-            userAccount.type=type
-            userAccount.phone_number=phone_number
-            userAccount.save()
-            if enable2FA == True:
+            UserAccount.objects.create_user(username=username, password=password,
+                                                          email=email,type=type,
+                                                          phone_number=phone_number,
+                                            first_name=first_name,last_name=last_name)
+            if enable2FA == "True":
                 userAccount = UserAccount.objects.get(username=username)
                 otp_base32 = pyotp.random_base32()
                 otp_auth_url = pyotp.totp.TOTP(otp_base32).provisioning_uri(
