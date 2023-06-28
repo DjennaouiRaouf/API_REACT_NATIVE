@@ -13,10 +13,20 @@ class CustomUserAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         ('Personal Info', {'fields': ('first_name', 'last_name', 'email','phone_number','type')}),
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions',
-                                    'otp_enabled','otp_verified','otp_base32','otp_auth_url')}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+        ('2FA', {'fields': ('otp_enabled','otp_verified','otp_base32','otp_auth_url')}),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
+    actions = ['activate_user', 'deactivate_user','disable_otp']
+
+    def activate_user(self, request, queryset):
+        queryset.update(is_active=True)
+
+    def deactivate_user(self, request, queryset):
+        queryset.update(is_active=False)
+
+    def disable_otp(self, request, queryset):
+        queryset.update(otp_enabled=False,otp_verified=False,otp_base32=None,otp_auth_url=None)
 
 admin.site.register(UserAccount, CustomUserAdmin)
 

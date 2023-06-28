@@ -51,6 +51,7 @@ class SignInView(APIView):
             last_name = request.data.get('last_name')
             type = request.data.get('type')
             phone_number = request.data.get('phone_number')
+            enable2FA=request.data.get('enable2FA')
 
             userAccount = UserAccount.objects.create_user(username=username, password=password)
 
@@ -59,8 +60,17 @@ class SignInView(APIView):
             userAccount.last_name=last_name
             userAccount.type=type
             userAccount.phone_number=phone_number
-
             userAccount.save()
+            if enable2FA == True:
+                userAccount = UserAccount.objects.get(username=username)
+                otp_base32 = pyotp.random_base32()
+                otp_auth_url = pyotp.totp.TOTP(otp_base32).provisioning_uri(
+                    name=username, issuer_name="codepython.com")
+                userAccount.otp_auth_url = otp_auth_url
+                userAccount.otp_base32 = otp_base32
+                userAccount.otp_enabled = True
+                userAccount.otp_verified = False
+                userAccount.save()
 
             return Response({'message': 'User account has been created successfully'}, status=status.HTTP_200_OK)
         except:
@@ -83,19 +93,6 @@ Remove Store By id
 (We are not removing the store from the database we are going to set the flag is_available to false)
 '''
 
-class GenerateOTP(APIView):
-    def post(self, request):
-        user = UserAccount.objects.get(username=request.user.username)
-        if user != None:
-            otp_base32 = pyotp.random_base32()
-            otp_auth_url = pyotp.totp.TOTP(otp_base32).provisioning_uri(
-            name=request.user.username.lower(), issuer_name="codepython.com")
-            user.otp_auth_url = otp_auth_url
-            user.otp_base32 = otp_base32
-            user.save()
-            return Response({'base32': otp_base32, "otpauth_url": otp_auth_url})
-        else:
-            return Response({'message': 'User account not found '}, status=status.HTTP_404_NOT_FOUND)
 
 
 class VerifyOTP(APIView):
@@ -113,6 +110,8 @@ class VerifyOTP(APIView):
 
         else:
             return Response({'message': 'User account not found '}, status=status.HTTP_404_NOT_FOUND)
+
+
 
 
 class RemoveStoreView(APIView):
