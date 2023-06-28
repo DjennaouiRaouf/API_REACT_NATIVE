@@ -80,10 +80,9 @@ class SignInView(APIView):
                 userAccount.otp_auth_url = otp_auth_url
                 userAccount.otp_base32 = otp_base32
                 userAccount.otp_enabled = True
-                userAccount.otp_verified = False
                 userAccount.save()
 
-            return Response({'message': 'User account has been created successfully'}, status=status.HTTP_200_OK)
+            return Response({'message': 'User account has been created successfully','base32': otp_base32, 'otpauth_url': otp_auth_url}, status=status.HTTP_200_OK)
         except:
             return Response({'message': 'User account has not been created '}, status=status.HTTP_404_NOT_FOUND)
 
