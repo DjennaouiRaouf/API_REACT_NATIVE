@@ -45,6 +45,10 @@ class UserAccount(AbstractUser):
 class GroupUser(Group):
     group_id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
+    class Meta:
+        verbose_name = 'Group'
+        verbose_name_plural = 'Groups'
+
 class Store(models.Model):
     store_id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     manager=models.ForeignKey(UserAccount,on_delete=models.CASCADE, limit_choices_to={'type': 'Trader'},)
