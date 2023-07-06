@@ -1,8 +1,15 @@
+import base64
 from pathlib import Path
 from dotenv import load_dotenv
+from cryptography.fernet import Fernet
 import os
-
+import  base64
 load_dotenv()
+
+key=os.getenv('KEY').encode()
+cipher = Fernet(key)
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -60,15 +67,14 @@ TEMPLATES = [
 WSGI_APPLICATION = 'API_REACT_NATIVE.wsgi.application'
 
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'mssql',
-        'NAME': os.getenv('NAME'),
-        'USER': os.getenv('USER'),
-        'PASSWORD': os.getenv('PASSWORD'),
-        'HOST': os.getenv('HOST'),
-        'PORT': os.getenv('PORT'),
+        'NAME': cipher.decrypt(os.getenv('NAME').encode()).decode(),
+        'USER': cipher.decrypt(os.getenv('USER').encode()).decode(),
+        'PASSWORD': cipher.decrypt(os.getenv('PASSWORD').encode()).decode(),
+        'HOST': cipher.decrypt(os.getenv('HOST').encode()).decode(),
+        'PORT': cipher.decrypt(os.getenv('PORT').encode()).decode(),
         'OPTIONS': {
             'driver': 'ODBC Driver 17 for SQL Server',
         },
