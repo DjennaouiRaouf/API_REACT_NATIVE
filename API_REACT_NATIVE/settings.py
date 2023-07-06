@@ -1,5 +1,8 @@
 from pathlib import Path
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -9,7 +12,6 @@ SECRET_KEY = 'django-insecure-u5_*%_qs0te-%zny-mhl9xk=c2qx=d6-q%7cd55089)w^ixkk!
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
 
 
 INSTALLED_APPS = [
@@ -61,9 +63,16 @@ WSGI_APPLICATION = 'API_REACT_NATIVE.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'ENGINE': 'mssql',
+        'NAME': os.getenv('NAME'),
+        'USER': os.getenv('USER'),
+        'PASSWORD': os.getenv('PASSWORD'),
+        'HOST': os.getenv('HOST'),
+        'PORT': os.getenv('PORT'),
+        'OPTIONS': {
+            'driver': 'ODBC Driver 17 for SQL Server',
+        },
+    },
 }
 
 
