@@ -1,11 +1,10 @@
-import base64
+from django.core.management.utils import get_random_secret_key
 from pathlib import Path
 from dotenv import load_dotenv
 from cryptography.fernet import Fernet
 import os
-import  base64
-load_dotenv()
 
+load_dotenv()
 key=os.getenv('KEY').encode()
 cipher = Fernet(key)
 
@@ -14,10 +13,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 
-SECRET_KEY = 'django-insecure-u5_*%_qs0te-%zny-mhl9xk=c2qx=d6-q%7cd55089)w^ixkk!'
+SECRET_KEY = get_random_secret_key()
 
 DEBUG = True
-
 ALLOWED_HOSTS = ['*']
 
 
