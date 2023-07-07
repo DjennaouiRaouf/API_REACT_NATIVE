@@ -5,8 +5,8 @@ from django.core.exceptions import ValidationError
 
 from .models import *
 
-
 lpp=20
+
 class CustomUserAdmin(UserAdmin):
     list_display = ['user_id','username','phone_number','email','type','is_active','otp_enabled']
     list_per_page = lpp

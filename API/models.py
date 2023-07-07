@@ -35,8 +35,6 @@ class UserAccount(AbstractUser):
     otp_base32 = models.CharField(max_length=255, null=True)
     otp_auth_url = models.CharField(max_length=255, null=True)
 
-
-
     class Meta:
         verbose_name = 'User'
         verbose_name_plural = 'Users'
@@ -58,3 +56,11 @@ class Store(models.Model):
     is_available=models.BooleanField(null=False,blank=True,default=True)
     adress=models.CharField(max_length=500,null=False,blank=True,default='-')
 
+
+
+class Comments(models.Model):
+    comment_id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    rate=models.PositiveIntegerField(default=0)
+    comment_text=models.TextField(null=True,blank=True)
+    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE, limit_choices_to={'type': 'Customer'})
+    at= models.DateTimeField(auto_now=True)
