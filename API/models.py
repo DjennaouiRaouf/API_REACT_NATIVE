@@ -58,7 +58,7 @@ class Store(models.Model):
 
 
 
-class Comments(models.Model):
+class Comment(models.Model):
     comment_id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     rate=models.PositiveIntegerField(default=0)
     comment_text=models.TextField(null=True,blank=True)

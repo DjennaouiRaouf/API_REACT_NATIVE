@@ -45,3 +45,8 @@ class StoreAdmin(admin.ModelAdmin):
 
 admin.site.register(Store,StoreAdmin)
 
+
+class CommentAdmin(admin.ModelAdmin):
+    pass
+
+
