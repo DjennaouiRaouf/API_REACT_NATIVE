@@ -19,6 +19,8 @@ class CustomUserAdmin(UserAdmin):
     )
     actions = ['activate_user', 'deactivate_user','disable_otp']
 
+
+
     def activate_user(self, request, queryset):
         queryset.update(is_active=True)
 
@@ -43,10 +45,12 @@ class StoreAdmin(admin.ModelAdmin):
     list_display = ['store_id','store_name','manager','longitude','latitude','is_available']
 
 
+
 admin.site.register(Store,StoreAdmin)
 
 
 class CommentAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('comment_id','by','at','rate',)
 
+admin.site.register(Comment,CommentAdmin)
 

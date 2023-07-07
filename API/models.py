@@ -22,18 +22,19 @@ class UserAccount(AbstractUser):
 
     )
     email = models.EmailField(
+        default=None, blank=True,
         verbose_name='email address',
         max_length=255,
         unique=True,
         validators=[EmailValidator(message='Enter a valid email address.')]
     )
     user_id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    type=models.CharField(max_length=60, choices=GENDER_CHOICES)
-    phone_number= PhoneNumberField()
+    type=models.CharField(max_length=60, choices=GENDER_CHOICES,default=None,blank=True)
+    phone_number= PhoneNumberField(default=None,blank=True)
 
     otp_enabled = models.BooleanField(default=False)
-    otp_base32 = models.CharField(max_length=255, null=True)
-    otp_auth_url = models.CharField(max_length=255, null=True)
+    otp_base32 = models.CharField(max_length=255, null=True,blank=True)
+    otp_auth_url = models.CharField(max_length=255, null=True,blank=True)
 
     class Meta:
         verbose_name = 'User'
@@ -62,5 +63,5 @@ class Comment(models.Model):
     comment_id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     rate=models.PositiveIntegerField(default=0)
     comment_text=models.TextField(null=True,blank=True)
-    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE, limit_choices_to={'type': 'Customer'})
+    by = models.ForeignKey(UserAccount, on_delete=models.CASCADE, limit_choices_to={'type': 'Customer'})
     at= models.DateTimeField(auto_now=True)
