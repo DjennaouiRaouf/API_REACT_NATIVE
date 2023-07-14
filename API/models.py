@@ -31,7 +31,6 @@ class UserAccount(AbstractUser):
     user_id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     type=models.CharField(max_length=60, choices=GENDER_CHOICES,default=None,blank=True)
     phone_number= PhoneNumberField(default=None,blank=True)
-
     otp_enabled = models.BooleanField(default=False)
     otp_base32 = models.CharField(max_length=255, null=True,blank=True)
     otp_auth_url = models.CharField(max_length=255, null=True,blank=True)
